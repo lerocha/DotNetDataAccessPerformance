@@ -1,0 +1,15 @@
+.svn
+
+# Ignore database files
+#*.mdf
+
+# Ignore binary folders
+bin
+obj
+
+# Ignore Visual Studio files.
+*.suo
+*.user
+_ReSharper.*
+
+TestResults
