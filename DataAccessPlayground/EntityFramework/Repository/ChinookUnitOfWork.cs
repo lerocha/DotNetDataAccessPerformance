@@ -1,8 +1,6 @@
 ﻿using System;
-using DataAccessPlayground.Model;
-using DataAccessPlayground.Repository;
 
-namespace DataAccessPlayground.UnitOfWork
+namespace DataAccessPlayground.EntityFramework.Repository
 {
     public class ChinookUnitOfWork : IChinookUnitOfWork, IDisposable
     {

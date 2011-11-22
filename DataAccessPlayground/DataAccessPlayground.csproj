@@ -43,21 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Chinook.Designer.cs">
+    <Compile Include="EntityFramework\Chinook.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Chinook.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Repository\ObjectSetRepository.cs" />
-    <Compile Include="UnitOfWork\ChinookUnitOfWork.cs" />
-    <Compile Include="UnitOfWork\IChinookUnitOfWork.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="EntityFramework\Repository\ObjectSetRepository.cs" />
+    <Compile Include="EntityFramework\Repository\ChinookUnitOfWork.cs" />
+    <Compile Include="EntityFramework\Repository\IChinookUnitOfWork.cs" />
+    <Compile Include="EntityFramework\Repository\IRepository.cs" />
+    <Compile Include="EntityFramework\Repository\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EntityDeploy Include="Model\Chinook.edmx">
+    <EntityDeploy Include="EntityFramework\Chinook.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Chinook.Designer.cs</LastGenOutput>
     </EntityDeploy>

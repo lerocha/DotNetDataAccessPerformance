@@ -1,4 +1,4 @@
-﻿namespace DataAccessPlayground.UnitOfWork
+﻿namespace DataAccessPlayground.EntityFramework.Repository
 {
     public interface IUnitOfWork
     {

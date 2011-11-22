@@ -5,7 +5,7 @@ using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DataAccessPlayground.Repository
+namespace DataAccessPlayground.EntityFramework.Repository
 {
     /// <summary>
     /// Repository implementation using an ObjectSet (EF 4).
