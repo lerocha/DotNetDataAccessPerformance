@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessPlayground", "DataAccessPlayground\DataAccessPlayground.csproj", "{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessPlayground.Tests", "DataAccessPlayground.Tests\DataAccessPlayground.Tests.csproj", "{43607B7C-F264-4580-B535-707EFE217D50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43607B7C-F264-4580-B535-707EFE217D50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43607B7C-F264-4580-B535-707EFE217D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43607B7C-F264-4580-B535-707EFE217D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43607B7C-F264-4580-B535-707EFE217D50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
