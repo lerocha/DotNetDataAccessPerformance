@@ -7,6 +7,7 @@ using System.Linq;
 using Dapper;
 using DataAccessPlayground.EntityFramework;
 using Xunit;
+using Xunit.Extensions;
 
 namespace DataAccessPlayground.Tests
 {
@@ -20,80 +21,111 @@ namespace DataAccessPlayground.Tests
 	public class PerformanceTests
 	{
 		private const string ConnectionString = "data source=DEV-TEMPLATE;initial catalog=Chinook;integrated security=True;multipleactiveresultsets=True;";
-		Stopwatch _timer = new Stopwatch();
+		private readonly Stopwatch _timer = new Stopwatch();
 
-
-		[Fact]
-		public void DapperSelectTest()
+		[Theory]
+		[InlineData(1)]
+		[InlineData(10)]
+		[InlineData(100)]
+		[InlineData(500)]
+		[InlineData(1000)]
+		public void DapperSelectTest(int total)
 		{
 			_timer.Reset();
 			_timer.Start();
 
-			var query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-						FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-						LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-						WHERE Artist.Name = @name";
+			const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+								   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+								   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+								   WHERE Artist.Name = @name";
 
-			using (IDbConnection connection = new SqlConnection(ConnectionString))
+			for (int i = 0; i < total; i++)
 			{
-				connection.Open();
-				var songs = connection.Query<Song>(query, new {name = "Pearl Jam"});
-				Assert.True(songs.Count() > 0);
+				using (IDbConnection connection = new SqlConnection(ConnectionString))
+				{
+					connection.Open();
+					var songs = connection.Query<Song>(query, new {name = "Pearl Jam"});
+					Assert.True(songs.Count() > 0);
+				}
 			}
-
 			_timer.Stop();
-			Console.WriteLine(_timer.ElapsedMilliseconds);
+			Console.WriteLine("test=DapperSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
-		[Fact]
-		public void EntityFrameworkSelectTest()
+		[Theory]
+		[InlineData(1)]
+		[InlineData(10)]
+		[InlineData(100)]
+		[InlineData(500)]
+		[InlineData(1000)]
+		public void EntityFrameworkSelectTest(int total)
 		{
 			_timer.Reset();
 			_timer.Start();
 
-			using (var entities = new ChinookEntities())
+			for (int i = 0; i < total; i++)
 			{
-				var songs = from track in entities.Tracks
-							where track.Album.Artist.Name == "Pearl Jam"
-							select new Song
-							{
-								AlbumName = track.Album.Title,
-								ArtistName = track.Album.Artist.Name,
-								SongName = track.Name
-							};
+				using (var entities = new ChinookEntities())
+				{
+					var query = from track in entities.Tracks
+					            where track.Album.Artist.Name == "Pearl Jam"
+					            select new Song
+					                   	{
+					                   		AlbumName = track.Album.Title,
+					                   		ArtistName = track.Album.Artist.Name,
+					                   		SongName = track.Name
+					                   	};
 
-				Assert.True(songs.ToList().Count > 0);
+					var songs = query.ToList();
+					Assert.True(songs.Count > 0);
+				}
 			}
 
 			_timer.Stop();
-			Console.WriteLine(_timer.ElapsedMilliseconds);
+			Console.WriteLine("test=EntityFrameworkSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
-		private static readonly Func<ChinookEntities, string, IQueryable<Song>> Query =
-			CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
-				(entities, name) => from track in entities.Tracks
-				                    where track.Album.Artist.Name == name
-				                    select new Song
-				                           	{
-				                           		AlbumName = track.Album.Title,
-				                           		ArtistName = track.Album.Artist.Name,
-				                           		SongName = track.Name
-				                           	});
+		private static Func<ChinookEntities, string, IQueryable<Song>> _query;
 
-		[Fact]
-		public void EntityFrameworkPreCompiledSelectTest()
+		Func<ChinookEntities, string, IQueryable<Song>> Query
+		{
+			get
+			{
+				return _query ?? (_query = CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
+							(entities, name) => from track in entities.Tracks
+												where track.Album.Artist.Name == name
+												select new Song
+					                           			{
+					                           				AlbumName = track.Album.Title,
+					                           				ArtistName = track.Album.Artist.Name,
+					                           				SongName = track.Name
+					                           			}));
+			}
+		}
+
+		[Theory]
+		[InlineData(1)]
+		[InlineData(10)]
+		[InlineData(100)]
+		[InlineData(500)]
+		[InlineData(1000)]
+		public void EntityFrameworkPreCompiledSelectTest(int total)
 		{
 			_timer.Reset();
 			_timer.Start();
 
-			using (var entities = new ChinookEntities())
+			for (int i = 0; i < total; i++)
 			{
-				var songs = Query.Invoke(entities, "Pearl Jam");
-				Assert.True(songs.ToList().Count > 0);
+
+				using (var entities = new ChinookEntities())
+				{
+					var songs = Query.Invoke(entities, "Pearl Jam");
+					Assert.True(songs.ToList().Count > 0);
+				}
 			}
 
 			_timer.Stop();
-			Console.WriteLine(_timer.ElapsedMilliseconds);
+			Console.WriteLine("test=EntityFrameworkPreCompiledSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 	}
 }
