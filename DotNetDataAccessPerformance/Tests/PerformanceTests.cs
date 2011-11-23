@@ -23,11 +23,6 @@ namespace DotNetDataAccessPerformance.Tests
 	{
 		private const string ConnectionString = "data source=localhost;initial catalog=Chinook;integrated security=True;multipleactiveresultsets=True;";
 
-		private const string SqlQuery = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-										FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-										LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-										WHERE Artist.Name = @name";
-		
 		[Theory]
 		[InlineData(1)]
 		[InlineData(10)]
@@ -40,9 +35,9 @@ namespace DotNetDataAccessPerformance.Tests
 			for (int i = 0; i < total; i++)
 			{
 				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-								FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-								LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-								WHERE Artist.Name = 'Pearl Jam'";
+									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+									   WHERE Artist.Name = 'Pearl Jam'";
 
 				using (var connection = new SqlConnection(ConnectionString))
 				{
@@ -116,10 +111,15 @@ namespace DotNetDataAccessPerformance.Tests
 			using(new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+									   WHERE Artist.Name = @name";
+
 				using (var connection = new SqlConnection(ConnectionString))
 				{
 					connection.Open();
-					var songs = connection.Query<Song>(SqlQuery, new {name = "Pearl Jam"});
+					var songs = connection.Query<Song>(query, new {name = "Pearl Jam"});
 					Assert.True(songs.Count() > 0);
 				}
 			}
@@ -228,9 +228,14 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+									   WHERE Artist.Name = @name";
+
 				using (var context = new ChinookEntities())
 				{
-					var result = context.ExecuteStoreQuery<Song>(SqlQuery, new SqlParameter
+					var result = context.ExecuteStoreQuery<Song>(query, new SqlParameter
 					{
 						ParameterName = "@name",
 						Value = "Pearl Jam"
