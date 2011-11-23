@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using DataAccessPlayground.EntityFramework;
-using DataAccessPlayground.Tests.Helpers;
+using DataAccessPlayground.Helpers;
 using Xunit;
 using Xunit.Extensions;
 

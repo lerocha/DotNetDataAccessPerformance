@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace DataAccessPlayground.Tests.Helpers
+namespace DataAccessPlayground.Helpers
 {
 	public class TimeIt : IDisposable
 	{
