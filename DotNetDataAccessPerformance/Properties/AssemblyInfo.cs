@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DataAccessPlayground")]
+[assembly: AssemblyTitle("DotNetDataAccessPerformance")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SBD")]
-[assembly: AssemblyProduct("DataAccessPlayground")]
-[assembly: AssemblyCopyright("Copyright © SBD 2011")]
+[assembly: AssemblyProduct("DotNetDataAccessPerformance")]
+[assembly: AssemblyCopyright("Copyright © Luis Rocha 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace DataAccessPlayground.Helpers
+namespace DotNetDataAccessPerformance.Helpers
 {
 	public class TimeIt : IDisposable
 	{

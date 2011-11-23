@@ -1,4 +1,4 @@
-﻿namespace DataAccessPlayground.EntityFramework.Repository
+﻿namespace DotNetDataAccessPerformance.EntityFramework.Repository
 {
     public interface IUnitOfWork
     {

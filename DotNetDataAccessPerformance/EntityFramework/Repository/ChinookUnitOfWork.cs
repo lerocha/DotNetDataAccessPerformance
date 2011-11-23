@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataAccessPlayground.EntityFramework.Repository
+namespace DotNetDataAccessPerformance.EntityFramework.Repository
 {
     public class ChinookUnitOfWork : IChinookUnitOfWork, IDisposable
     {

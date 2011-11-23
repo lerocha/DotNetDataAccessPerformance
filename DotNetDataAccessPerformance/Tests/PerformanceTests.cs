@@ -5,12 +5,12 @@ using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using DataAccessPlayground.EntityFramework;
-using DataAccessPlayground.Helpers;
+using DotNetDataAccessPerformance.EntityFramework;
+using DotNetDataAccessPerformance.Helpers;
 using Xunit;
 using Xunit.Extensions;
 
-namespace DataAccessPlayground.Tests
+namespace DotNetDataAccessPerformance.Tests
 {
 	public class Song
 	{

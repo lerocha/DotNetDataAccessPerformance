@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DataAccessPlayground.EntityFramework.Repository
+namespace DotNetDataAccessPerformance.EntityFramework.Repository
 {
     /// <summary>
     /// Generic repository interface.

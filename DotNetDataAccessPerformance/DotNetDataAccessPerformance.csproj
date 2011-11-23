@@ -8,8 +8,8 @@
     <ProjectGuid>{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataAccessPlayground</RootNamespace>
-    <AssemblyName>DataAccessPlayground</AssemblyName>
+    <RootNamespace>DotNetDataAccessPerformance</RootNamespace>
+    <AssemblyName>DotNetDataAccessPerformance</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

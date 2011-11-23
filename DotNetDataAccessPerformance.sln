@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessPlayground", "DataAccessPlayground\DataAccessPlayground.csproj", "{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetDataAccessPerformance", "DotNetDataAccessPerformance\DotNetDataAccessPerformance.csproj", "{2078F36E-2F0A-4431-8AFC-1CA5BE6FC190}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
