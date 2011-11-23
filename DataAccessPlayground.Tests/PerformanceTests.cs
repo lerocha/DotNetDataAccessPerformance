@@ -71,7 +71,7 @@ namespace DataAccessPlayground.Tests
 				}
 			}
 			_timer.Stop();
-			Console.WriteLine("test=DapperSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=DataReaderQueryTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		[Theory]
@@ -114,7 +114,7 @@ namespace DataAccessPlayground.Tests
 				}
 			}
 			_timer.Stop();
-			Console.WriteLine("test=DapperSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=DataReaderStoredProcedureTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		[Theory]
@@ -138,7 +138,7 @@ namespace DataAccessPlayground.Tests
 				}
 			}
 			_timer.Stop();
-			Console.WriteLine("test=DapperSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=DapperQueryTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		[Theory]
@@ -164,7 +164,7 @@ namespace DataAccessPlayground.Tests
 				}
 			}
 			_timer.Stop();
-			Console.WriteLine("test=DapperSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=DapperStoredProcedureTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		[Theory]
@@ -197,7 +197,7 @@ namespace DataAccessPlayground.Tests
 			}
 
 			_timer.Stop();
-			Console.WriteLine("test=EntityFrameworkSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=EntityFrameworkLinqToEntitiesTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		private static Func<ChinookEntities, string, IQueryable<Song>> _query;
@@ -268,7 +268,7 @@ namespace DataAccessPlayground.Tests
 			}
 
 			_timer.Stop();
-			Console.WriteLine("test=EntityFrameworkSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=EntityFrameworkQueryTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 
 		[Theory]
@@ -293,7 +293,7 @@ namespace DataAccessPlayground.Tests
 			}
 
 			_timer.Stop();
-			Console.WriteLine("test=EntityFrameworkSelectTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
+			Console.WriteLine("test=EntityFrameworkStoredProcedureTest; total={0}; time={1};", total, _timer.ElapsedMilliseconds);
 		}
 	}
 }
