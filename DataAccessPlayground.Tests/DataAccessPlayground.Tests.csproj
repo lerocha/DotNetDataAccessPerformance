@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeIt.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessPlayground\DataAccessPlayground.csproj">
