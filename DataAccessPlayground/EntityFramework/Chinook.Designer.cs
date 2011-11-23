@@ -323,6 +323,28 @@ namespace DataAccessPlayground.EntityFramework
         }
 
         #endregion
+        #region Function Imports
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="name">No Metadata Documentation available.</param>
+        public ObjectResult<GetSongsByArtistResult> GetSongsByArtist(global::System.String name)
+        {
+            ObjectParameter nameParameter;
+            if (name != null)
+            {
+                nameParameter = new ObjectParameter("name", name);
+            }
+            else
+            {
+                nameParameter = new ObjectParameter("name", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction<GetSongsByArtistResult>("GetSongsByArtist", nameParameter);
+        }
+
+        #endregion
     }
     
 
@@ -2774,6 +2796,108 @@ namespace DataAccessPlayground.EntityFramework
                 }
             }
         }
+
+        #endregion
+    }
+
+    #endregion
+    #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="ChinookModel", Name="GetSongsByArtistResult")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GetSongsByArtistResult : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GetSongsByArtistResult object.
+        /// </summary>
+        /// <param name="songName">Initial value of the SongName property.</param>
+        public static GetSongsByArtistResult CreateGetSongsByArtistResult(global::System.String songName)
+        {
+            GetSongsByArtistResult getSongsByArtistResult = new GetSongsByArtistResult();
+            getSongsByArtistResult.SongName = songName;
+            return getSongsByArtistResult;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String AlbumName
+        {
+            get
+            {
+                return _AlbumName;
+            }
+            set
+            {
+                OnAlbumNameChanging(value);
+                ReportPropertyChanging("AlbumName");
+                _AlbumName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AlbumName");
+                OnAlbumNameChanged();
+            }
+        }
+        private global::System.String _AlbumName;
+        partial void OnAlbumNameChanging(global::System.String value);
+        partial void OnAlbumNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String SongName
+        {
+            get
+            {
+                return _SongName;
+            }
+            set
+            {
+                OnSongNameChanging(value);
+                ReportPropertyChanging("SongName");
+                _SongName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("SongName");
+                OnSongNameChanged();
+            }
+        }
+        private global::System.String _SongName;
+        partial void OnSongNameChanging(global::System.String value);
+        partial void OnSongNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ArtistName
+        {
+            get
+            {
+                return _ArtistName;
+            }
+            set
+            {
+                OnArtistNameChanging(value);
+                ReportPropertyChanging("ArtistName");
+                _ArtistName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ArtistName");
+                OnArtistNameChanged();
+            }
+        }
+        private global::System.String _ArtistName;
+        partial void OnArtistNameChanging(global::System.String value);
+        partial void OnArtistNameChanged();
 
         #endregion
     }

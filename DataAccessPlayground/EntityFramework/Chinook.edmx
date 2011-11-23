@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChinookModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ChinookModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ChinookModelStoreContainer">
           <EntitySet Name="Album" EntityType="ChinookModel.Store.Album" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Artist" EntityType="ChinookModel.Store.Artist" store:Type="Tables" Schema="dbo" />
@@ -314,8 +314,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+        <Function Name="spGetSongsByArtist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChinookModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -370,6 +372,9 @@
             <End Role="Playlist" EntitySet="Playlists" />
             <End Role="Track" EntitySet="Tracks" />
           </AssociationSet>
+          <FunctionImport Name="GetSongsByArtist" ReturnType="Collection(ChinookModel.GetSongsByArtistResult)">
+            <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Album">
           <Key>
@@ -615,6 +620,11 @@
           <End Role="Playlist" Type="ChinookModel.Playlist" Multiplicity="*" />
           <End Role="Track" Type="ChinookModel.Track" Multiplicity="*" />
         </Association>
+        <ComplexType Name="GetSongsByArtistResult">
+          <Property Type="String" Name="AlbumName" Nullable="true" MaxLength="160" />
+          <Property Type="String" Name="SongName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="ArtistName" Nullable="true" MaxLength="120" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -711,6 +721,15 @@
               <ScalarProperty Name="TrackId" ColumnName="TrackId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetSongsByArtist" FunctionName="ChinookModel.Store.spGetSongsByArtist">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChinookModel.GetSongsByArtistResult">
+                <ScalarProperty Name="AlbumName" ColumnName="AlbumName" />
+                <ScalarProperty Name="SongName" ColumnName="SongName" />
+                <ScalarProperty Name="ArtistName" ColumnName="ArtistName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
