@@ -20,7 +20,7 @@ namespace DataAccessPlayground.Tests
 
 	public class PerformanceTests
 	{
-		private const string ConnectionString = "data source=DEV-TEMPLATE;initial catalog=Chinook;integrated security=True;multipleactiveresultsets=True;";
+		private const string ConnectionString = "data source=localhost;initial catalog=Chinook;integrated security=True;multipleactiveresultsets=True;";
 		private readonly Stopwatch _timer = new Stopwatch();
 
 		[Theory]
@@ -116,7 +116,6 @@ namespace DataAccessPlayground.Tests
 
 			for (int i = 0; i < total; i++)
 			{
-
 				using (var entities = new ChinookEntities())
 				{
 					var songs = Query.Invoke(entities, "Pearl Jam");
