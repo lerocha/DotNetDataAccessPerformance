@@ -37,35 +37,33 @@ namespace DotNetDataAccessPerformance.Tests
 		public void DataReaderQueryTest(int total)
 		{
 			using (new TimeIt(total))
+			for (int i = 0; i < total; i++)
 			{
-				const string query =@"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-								   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-								   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-								   WHERE Artist.Name = 'Pearl Jam'";
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+								FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+								LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+								WHERE Artist.Name = 'Pearl Jam'";
 
-				for (int i = 0; i < total; i++)
+				using (var connection = new SqlConnection(ConnectionString))
 				{
-					using (var connection = new SqlConnection(ConnectionString))
+					connection.Open();
+					var command = new SqlCommand(query, connection);
+
+					var songs = new List<Song>();
+					using (var reader = command.ExecuteReader())
 					{
-						connection.Open();
-						var command = new SqlCommand(query, connection);
-
-						var songs = new List<Song>();
-						using (var reader = command.ExecuteReader())
+						while (reader.Read())
 						{
-							while (reader.Read())
-							{
-								songs.Add(new Song
-								          	{
-								          		AlbumName = reader[0] as string,
-								          		SongName = reader[1] as string,
-								          		ArtistName = reader[2] as string
-								          	});
-							}
+							songs.Add(new Song
+								        {
+								          	AlbumName = reader[0] as string,
+								          	SongName = reader[1] as string,
+								          	ArtistName = reader[2] as string
+								        });
 						}
-
-						Assert.True(songs.Count() > 0);
 					}
+
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -177,21 +175,26 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		private static Func<ChinookEntities, string, IQueryable<Song>> _query;
+		private static Func<ChinookEntities, string, IQueryable<Song>> _compiledLinqQuery;
 
-		Func<ChinookEntities, string, IQueryable<Song>> Query
+		Func<ChinookEntities, string, IQueryable<Song>> CompiledLinqCompiledLinqQuery
 		{
 			get
 			{
-				return _query ?? (_query = CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
-							(context, name) => from track in context.Tracks
-												where track.Album.Artist.Name == name
-												select new Song
-					                           			{
-					                           				AlbumName = track.Album.Title,
-					                           				ArtistName = track.Album.Artist.Name,
-					                           				SongName = track.Name
-					                           			}));
+				if (_compiledLinqQuery == null)
+				{
+					_compiledLinqQuery = CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
+						(context, name) => from track in context.Tracks
+						                   where track.Album.Artist.Name == name
+						                   select new Song
+						                          	{
+						                          		AlbumName = track.Album.Title,
+						                          		ArtistName = track.Album.Artist.Name,
+						                          		SongName = track.Name
+						                          	});
+				}
+
+				return _compiledLinqQuery;
 			}
 		}
 
@@ -201,14 +204,14 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(100)]
 		[InlineData(500)]
 		[InlineData(1000)]
-		public void EntityFrameworkPreCompiledSelectTest(int total)
+		public void EntityFrameworkCompiledLinqQueryTest(int total)
 		{
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
 				using (var context = new ChinookEntities())
 				{
-					var songs = Query.Invoke(context, "Pearl Jam");
+					var songs = CompiledLinqCompiledLinqQuery.Invoke(context, "Pearl Jam");
 					Assert.True(songs.ToList().Count > 0);
 				}
 			}
