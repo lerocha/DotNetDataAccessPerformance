@@ -9,20 +9,17 @@ using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.EntityFramework;
 using DotNetDataAccessPerformance.Helpers;
 using Xunit;
-using Xunit.Extensions;
 
 namespace DotNetDataAccessPerformance.Tests
 {
 	public class PerformanceTests
 	{
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void DataReaderNativeQueryTest(int total)
+		private readonly int[] _totals = {1, 1, 10, 100, 500, 1000};
+
+		[Fact]
+		public void DataReaderNativeQueryTest()
 		{
+			foreach(var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -54,15 +51,11 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void DataReaderStoredProcedureTest(int total)
+		[Fact]
+		public void DataReaderStoredProcedureTest()
 		{
-			using(new TimeIt(total))
+			foreach (var total in _totals)
+			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
 				using (var connection = ConnectionFactory.OpenConnection())
@@ -90,15 +83,11 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void DapperNativeQueryTest(int total)
+		[Fact]
+		public void DapperNativeQueryTest()
 		{
-			using(new TimeIt(total))
+			foreach (var total in _totals)
+			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
 				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
@@ -114,14 +103,10 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void DapperStoredProcedureTest(int total)
+		[Fact]
+		public void DapperStoredProcedureTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -135,14 +120,10 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void EntityFrameworkLinqToEntitiesTest(int total)
+		[Fact]
+		public void EntityFrameworkLinqToEntitiesTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -186,14 +167,10 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void EntityFrameworkCompiledLinqQueryTest(int total)
+		[Fact]
+		public void EntityFrameworkCompiledLinqQueryTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -205,14 +182,10 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void EntityFrameworkNativeQueryTest(int total)
+		[Fact]
+		public void EntityFrameworkNativeQueryTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -234,14 +207,10 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void EntityFrameworkStoredProcedureTest(int total)
+		[Fact]
+		public void EntityFrameworkStoredProcedureTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
@@ -254,47 +223,39 @@ namespace DotNetDataAccessPerformance.Tests
 			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void NHibernateNativeQueryTest(int total)
+		[Fact]
+		public void NHibernateNativeQueryTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
-				for (int i = 0; i < total; i++)
+			for (int i = 0; i < total; i++)
+			{
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+									FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+									LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+									WHERE Artist.Name = 'Pearl Jam'";
+
+				using (var session = NHibernateHelper.OpenSession())
 				{
-					const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-									   WHERE Artist.Name = 'Pearl Jam'";
+					var sqlQuery = session.CreateSQLQuery(query);
 
-					using (var session = NHibernateHelper.OpenSession())
-					{
-						var sqlQuery = session.CreateSQLQuery(query);
+					var songs = (from object[] item in sqlQuery.List() 
+									select new Song
+									        {
+									        	AlbumName = (string)item[0],
+												SongName = (string) item[1],
+												ArtistName = (string) item[2]
+									        }).ToList();
 
-						var songs = (from object[] item in sqlQuery.List() 
-									 select new Song
-									        	{
-									        		AlbumName = (string)item[0],
-													SongName = (string) item[1],
-													ArtistName = (string) item[2]
-									        	}).ToList();
-
-						Assert.True(songs.Count() > 0);
-					}
+					Assert.True(songs.Count() > 0);
 				}
+			}
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(10)]
-		[InlineData(100)]
-		[InlineData(500)]
-		[InlineData(1000)]
-		public void NHibernateStoredProcedureTest(int total)
+		[Fact]
+		public void NHibernateStoredProcedureTest()
 		{
+			foreach (var total in _totals)
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
