@@ -5,6 +5,7 @@ using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.EntityFramework;
 using DotNetDataAccessPerformance.Helpers;
 using Xunit;
@@ -12,17 +13,8 @@ using Xunit.Extensions;
 
 namespace DotNetDataAccessPerformance.Tests
 {
-	public class Song
-	{
-		public string SongName { get; set; }
-		public string AlbumName { get; set; }
-		public string ArtistName { get; set; }
-	}
-
 	public class PerformanceTests
 	{
-		private const string ConnectionString = "data source=localhost;initial catalog=Chinook;integrated security=True;multipleactiveresultsets=True;";
-
 		[Theory]
 		[InlineData(1)]
 		[InlineData(10)]
@@ -39,9 +31,8 @@ namespace DotNetDataAccessPerformance.Tests
 									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
 									   WHERE Artist.Name = 'Pearl Jam'";
 
-				using (var connection = new SqlConnection(ConnectionString))
+				using (var connection = ConnectionFactory.OpenConnection())
 				{
-					connection.Open();
 					var command = new SqlCommand(query, connection);
 
 					var songs = new List<Song>();
@@ -74,9 +65,8 @@ namespace DotNetDataAccessPerformance.Tests
 			using(new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				using (var connection = new SqlConnection(ConnectionString))
+				using (var connection = ConnectionFactory.OpenConnection())
 				{
-					connection.Open();
 					var command = new SqlCommand("spGetSongsByArtist", connection);
 					command.CommandType = CommandType.StoredProcedure;
 					command.Parameters.Add(new SqlParameter("@name", "Pearl Jam"));
@@ -116,9 +106,8 @@ namespace DotNetDataAccessPerformance.Tests
 									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
 									   WHERE Artist.Name = @name";
 
-				using (var connection = new SqlConnection(ConnectionString))
+				using (var connection = ConnectionFactory.OpenConnection())
 				{
-					connection.Open();
 					var songs = connection.Query<Song>(query, new {name = "Pearl Jam"});
 					Assert.True(songs.Count() > 0);
 				}
@@ -136,9 +125,8 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				using (var connection = new SqlConnection(ConnectionString))
+				using (var connection = ConnectionFactory.OpenConnection())
 				{
-					connection.Open();
 					var songs = connection.Query<Song>("spGetSongsByArtist", 
 														new { name = "Pearl Jam" },
 														commandType: CommandType.StoredProcedure);
@@ -261,6 +249,27 @@ namespace DotNetDataAccessPerformance.Tests
 				{
 					var result = context.GetSongsByArtist("Pearl Jam");
 					var songs = result.ToList();
+					Assert.True(songs.Count > 0);
+				}
+			}
+		}
+
+		[Theory]
+		[InlineData(1)]
+		[InlineData(10)]
+		[InlineData(100)]
+		[InlineData(500)]
+		[InlineData(1000)]
+		public void NHibernateStoredProcedureTest(int total)
+		{
+			using (new TimeIt(total))
+			for (int i = 0; i < total; i++)
+			{
+				using (var session = NHibernateHelper.OpenSession())
+				{
+					var query = session.GetNamedQuery("spGetSongsByArtist")
+									   .SetString("name", "Pearl Jam");
+					var songs = query.List();
 					Assert.True(songs.Count > 0);
 				}
 			}
