@@ -10,13 +10,13 @@ namespace DotNetDataAccessPerformance.Repositories
 			{
 				return new DrapperStoredProcedureRepository();
 			}
-			if (type == typeof(DrapperNativeRepository))
+			if (type == typeof(DrapperNativeQueryRepository))
 			{
-				return new DrapperNativeRepository();
+				return new DrapperNativeQueryRepository();
 			}
-			if (type == typeof(DataReaderNativeRepository))
+			if (type == typeof(DataReaderNativeQueryRepository))
 			{
-				return new DataReaderNativeRepository();
+				return new DataReaderNativeQueryRepository();
 			}
 			if (type == typeof(DataReaderStoredProcedureRepository))
 			{
@@ -42,9 +42,9 @@ namespace DotNetDataAccessPerformance.Repositories
 			{
 				return new NHibernateQueryStrongTypeRepository();
 			}
-			if (type == typeof(NHibernateQueryRepository))
+			if (type == typeof(NHibernateHqlQueryRepository))
 			{
-				return new NHibernateQueryRepository();
+				return new NHibernateHqlQueryRepository();
 			}
 			if (type == typeof(NHibernateNativeQueryRepository))
 			{

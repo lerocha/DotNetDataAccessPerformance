@@ -12,16 +12,16 @@ namespace DotNetDataAccessPerformance.Tests
 		private readonly int[] _totals = {1, 1, 10, 100, 500, 1000};
 
 		[Theory]
-		[InlineData(typeof(DataReaderNativeRepository))]
+		[InlineData(typeof(DataReaderNativeQueryRepository))]
 		[InlineData(typeof(DataReaderStoredProcedureRepository))]
-		[InlineData(typeof(DrapperNativeRepository))]
+		[InlineData(typeof(DrapperNativeQueryRepository))]
 		[InlineData(typeof(DrapperStoredProcedureRepository))]
 		[InlineData(typeof(EntityFrameworkCompiledLinqQueryRepository))]
 		[InlineData(typeof(EntityFrameworkLinqToEntitiesRepository))]
 		[InlineData(typeof(EntityFrameworkNativeQueryRepository))]
 		[InlineData(typeof(EntityFrameworkStoredProcedureRepository))]
 		[InlineData(typeof(NHibernateNativeQueryRepository))]
-		[InlineData(typeof(NHibernateQueryRepository))]
+		[InlineData(typeof(NHibernateHqlQueryRepository))]
 		[InlineData(typeof(NHibernateQueryStrongTypeRepository))]
 		[InlineData(typeof(NHibernateStoredProcedureRepository))]
 		public void GetSongsByArtistTest(Type type)

@@ -5,7 +5,7 @@ using DotNetDataAccessPerformance.Helpers;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
-	public class NHibernateQueryRepository : IRepository
+	public class NHibernateHqlQueryRepository : IRepository
 	{
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{

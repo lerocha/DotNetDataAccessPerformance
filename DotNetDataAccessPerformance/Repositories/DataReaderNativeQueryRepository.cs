@@ -5,7 +5,7 @@ using DotNetDataAccessPerformance.Helpers;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
-	public class DataReaderNativeRepository : IRepository
+	public class DataReaderNativeQueryRepository : IRepository
 	{
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
