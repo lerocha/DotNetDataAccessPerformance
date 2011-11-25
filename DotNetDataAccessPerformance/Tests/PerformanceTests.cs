@@ -227,6 +227,61 @@ namespace DotNetDataAccessPerformance.Tests
 		}
 
 		[Fact]
+		public void NHibernateQueryStrongTypeTest()
+		{
+			foreach (var total in _totals)
+			using (new TimeIt(total))
+			for (int i = 0; i < total; i++)
+			{
+				using (var session = NHibernateHelper.OpenSession())
+				{
+					var query = session.CreateQuery(@"select track
+													  from Track track 
+													  join track.Album as album
+													  join album.Artist as artist
+													  where artist.Name='Pearl Jam'");
+
+					var songs = (from track in query.List<Domain.Track>()
+								 select new Song
+								 {
+									 AlbumName = track.Album.Title,
+									 SongName = track.Name,
+									 ArtistName = track.Album.Artist.Name
+								 }).ToList();
+
+					Assert.True(songs.Count > 0);
+				}
+			}
+		}
+
+		[Fact]
+		public void NHibernateQueryTest()
+		{
+			foreach (var total in _totals)
+			using (new TimeIt(total))
+			for (int i = 0; i < total; i++)
+			{
+				using (var session = NHibernateHelper.OpenSession())
+				{
+					var query = session.CreateQuery(@"from Track track 
+												join track.Album as album
+												join album.Artist as artist
+												where artist.Name='Pearl Jam'");
+
+					var songs = (from object[] item in query.List()
+									select new Song
+									{
+										AlbumName = ((Domain.Album)item[1]).Title,
+										SongName = ((Domain.Track)item[0]).Name,
+										ArtistName = ((Domain.Artist)item[2]).Name
+									}).ToList();
+
+					Assert.True(songs.Count > 0);
+				}
+			}
+		}
+
+		[Fact]
 		public void NHibernateNativeQueryTest()
 		{
 			foreach (var total in _totals)
