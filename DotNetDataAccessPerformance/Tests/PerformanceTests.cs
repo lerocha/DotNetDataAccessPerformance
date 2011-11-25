@@ -23,10 +23,11 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-									   WHERE Artist.Name = 'Pearl Jam'";
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
+									   FROM Artist
+									   INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+									   INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+									   WHERE Artist.Name='Pearl Jam'";
 
 				using (var connection = ConnectionFactory.OpenConnection())
 				{
@@ -90,10 +91,11 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-									   WHERE Artist.Name = @name";
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
+									   FROM Artist
+									   INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+									   INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+									   WHERE Artist.Name=@name";
 
 				using (var connection = ConnectionFactory.OpenConnection())
 				{
@@ -189,10 +191,11 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-									   WHERE Artist.Name = @name";
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
+									   FROM Artist
+									   INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+									   INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+									   WHERE Artist.Name=@name";
 
 				using (var context = new ChinookEntities())
 				{
@@ -230,10 +233,11 @@ namespace DotNetDataAccessPerformance.Tests
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
 			{
-				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
-									FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
-									LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
-									WHERE Artist.Name = 'Pearl Jam'";
+				const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
+									   FROM Artist
+									   INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+									   INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+									   WHERE Artist.Name='Pearl Jam'";
 
 				using (var session = NHibernateHelper.OpenSession())
 				{
