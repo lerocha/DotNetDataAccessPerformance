@@ -73,8 +73,22 @@
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Helpers\TimeIt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DataReaderNativeRepository.cs" />
+    <Compile Include="Repositories\DataReaderStoredProcedureRepository.cs" />
+    <Compile Include="Repositories\DrapperNativeRepository.cs" />
+    <Compile Include="Repositories\DrapperStoredProcedureRepository.cs" />
+    <Compile Include="Repositories\EntityFrameworkCompiledLinqQueryRepository.cs" />
+    <Compile Include="Repositories\EntityFrameworkLinqToEntitiesRepository.cs" />
+    <Compile Include="Repositories\EntityFrameworkNativeQueryRepository.cs" />
+    <Compile Include="Repositories\EntityFrameworkStoredProcedureRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\NHibernateNativeQueryRepository.cs" />
+    <Compile Include="Repositories\NHibernateQueryRepository.cs" />
+    <Compile Include="Repositories\NHibernateQueryStrongTypeRepository.cs" />
+    <Compile Include="Repositories\NHibernateStoredProcedureRepository.cs" />
     <Compile Include="Tests\PerformanceTests.cs" />
     <Compile Include="Domain\Song.cs" />
+    <Compile Include="Repositories\RepositoryFactory.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

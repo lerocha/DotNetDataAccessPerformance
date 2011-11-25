@@ -1,0 +1,32 @@
+using System.Collections.Generic;
+using System.Linq;
+using DotNetDataAccessPerformance.Domain;
+using DotNetDataAccessPerformance.Helpers;
+
+namespace DotNetDataAccessPerformance.Repositories
+{
+	public class NHibernateQueryStrongTypeRepository : IRepository
+	{
+		public IEnumerable<Song> GetSongsByArtist(string name)
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				var query = session.CreateQuery(@"select track
+													  from Track track 
+													  join track.Album as album
+													  join album.Artist as artist
+													  where artist.Name='Pearl Jam'");
+
+				var songs = (from track in query.List<Track>()
+				             select new Song
+				                    	{
+				                    		AlbumName = track.Album.Title,
+				                    		SongName = track.Name,
+				                    		ArtistName = track.Album.Artist.Name
+				                    	}).ToList();
+
+				return songs;
+			}
+		}
+	}
+}
