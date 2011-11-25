@@ -21,7 +21,7 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(100)]
 		[InlineData(500)]
 		[InlineData(1000)]
-		public void DataReaderQueryTest(int total)
+		public void DataReaderNativeQueryTest(int total)
 		{
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
@@ -96,7 +96,7 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(100)]
 		[InlineData(500)]
 		[InlineData(1000)]
-		public void DapperQueryTest(int total)
+		public void DapperNativeQueryTest(int total)
 		{
 			using(new TimeIt(total))
 			for (int i = 0; i < total; i++)
@@ -211,7 +211,7 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(100)]
 		[InlineData(500)]
 		[InlineData(1000)]
-		public void EntityFrameworkQueryTest(int total)
+		public void EntityFrameworkNativeQueryTest(int total)
 		{
 			using (new TimeIt(total))
 			for (int i = 0; i < total; i++)
@@ -260,6 +260,39 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(100)]
 		[InlineData(500)]
 		[InlineData(1000)]
+		public void NHibernateNativeQueryTest(int total)
+		{
+			using (new TimeIt(total))
+				for (int i = 0; i < total; i++)
+				{
+					const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName 
+									   FROM Track LEFT JOIN Album ON Track.AlbumId = Album.AlbumId
+									   LEFT JOIN Artist ON Album.ArtistId = Artist.ArtistId
+									   WHERE Artist.Name = 'Pearl Jam'";
+
+					using (var session = NHibernateHelper.OpenSession())
+					{
+						var sqlQuery = session.CreateSQLQuery(query);
+
+						var songs = (from object[] item in sqlQuery.List() 
+									 select new Song
+									        	{
+									        		AlbumName = (string)item[0],
+													SongName = (string) item[1],
+													ArtistName = (string) item[2]
+									        	}).ToList();
+
+						Assert.True(songs.Count() > 0);
+					}
+				}
+		}
+
+		[Theory]
+		[InlineData(1)]
+		[InlineData(10)]
+		[InlineData(100)]
+		[InlineData(500)]
+		[InlineData(1000)]
 		public void NHibernateStoredProcedureTest(int total)
 		{
 			using (new TimeIt(total))
@@ -269,7 +302,13 @@ namespace DotNetDataAccessPerformance.Tests
 				{
 					var query = session.GetNamedQuery("spGetSongsByArtist")
 									   .SetString("name", "Pearl Jam");
-					var songs = query.List();
+					var songs = (from object[] item in query.List()
+								 select new Song
+								 {
+									 AlbumName = (string)item[0],
+									 SongName = (string)item[1],
+									 ArtistName = (string)item[2]
+								 }).ToList();
 					Assert.True(songs.Count > 0);
 				}
 			}
