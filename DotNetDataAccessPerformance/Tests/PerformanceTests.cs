@@ -141,7 +141,7 @@ namespace DotNetDataAccessPerformance.Tests
 					                   	};
 
 					var songs = query.ToList();
-					Assert.True(songs.Count > 0);
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -178,8 +178,8 @@ namespace DotNetDataAccessPerformance.Tests
 			{
 				using (var context = new ChinookEntities())
 				{
-					var songs = CompiledLinqCompiledLinqQuery.Invoke(context, "Pearl Jam");
-					Assert.True(songs.ToList().Count > 0);
+					var songs = CompiledLinqCompiledLinqQuery.Invoke(context, "Pearl Jam").ToList();
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -220,8 +220,14 @@ namespace DotNetDataAccessPerformance.Tests
 				using (var context = new ChinookEntities())
 				{
 					var result = context.GetSongsByArtist("Pearl Jam");
-					var songs = result.ToList();
-					Assert.True(songs.Count > 0);
+					var songs = (from item in result.ToList()
+					            select new Song
+					                   	{
+											SongName = item.SongName,
+											AlbumName = item.AlbumName,
+											ArtistName = item.ArtistName
+					                   	}).ToList();
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -249,7 +255,7 @@ namespace DotNetDataAccessPerformance.Tests
 									 ArtistName = track.Album.Artist.Name
 								 }).ToList();
 
-					Assert.True(songs.Count > 0);
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -264,9 +270,9 @@ namespace DotNetDataAccessPerformance.Tests
 				using (var session = NHibernateHelper.OpenSession())
 				{
 					var query = session.CreateQuery(@"from Track track 
-												join track.Album as album
-												join album.Artist as artist
-												where artist.Name='Pearl Jam'");
+													  join track.Album as album
+													  join album.Artist as artist
+													  where artist.Name='Pearl Jam'");
 
 					var songs = (from object[] item in query.List()
 									select new Song
@@ -276,7 +282,7 @@ namespace DotNetDataAccessPerformance.Tests
 										ArtistName = ((Domain.Artist)item[2]).Name
 									}).ToList();
 
-					Assert.True(songs.Count > 0);
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
@@ -329,7 +335,7 @@ namespace DotNetDataAccessPerformance.Tests
 									 SongName = (string)item[1],
 									 ArtistName = (string)item[2]
 								 }).ToList();
-					Assert.True(songs.Count > 0);
+					Assert.True(songs.Count() > 0);
 				}
 			}
 		}
