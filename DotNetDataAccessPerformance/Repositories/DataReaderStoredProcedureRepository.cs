@@ -8,13 +8,35 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class DataReaderStoredProcedureRepository : IRepository
 	{
+		public Artist GetArtistById(int id)
+		{
+			using (var connection = ConnectionFactory.OpenConnection())
+			{
+				var command = new SqlCommand("spGetArtistById", connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.Add(new SqlParameter("@id", 10));
+				using (var reader = command.ExecuteReader())
+				{
+					if (reader.Read())
+					{
+						return new Artist
+						{
+							ArtistId = (int) reader[0],
+							Name = (string) reader[1],
+						};
+					}
+				}
+			}
+			return null;
+		}
+
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
 			using (var connection = ConnectionFactory.OpenConnection())
 			{
 				var command = new SqlCommand("spGetSongsByArtist", connection);
 				command.CommandType = CommandType.StoredProcedure;
-				command.Parameters.Add(new SqlParameter("@name", "Pearl Jam"));
+				command.Parameters.Add(new SqlParameter("@name", name));
 
 				var songs = new List<Song>();
 				using (var reader = command.ExecuteReader())
@@ -29,7 +51,6 @@ namespace DotNetDataAccessPerformance.Repositories
 						          	});
 					}
 				}
-
 				return songs;
 			}
 		}

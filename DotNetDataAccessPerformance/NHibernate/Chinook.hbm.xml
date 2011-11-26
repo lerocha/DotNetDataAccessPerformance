@@ -51,4 +51,12 @@
     exec dbo.spGetSongsByArtist :name
   </sql-query>
 
+  <sql-query name="spGetArtistById">
+    <return alias="artist" class="Artist">
+      <return-property name="ArtistId" column="ArtistId"/>
+      <return-property name="Name" column="Name"/>
+    </return>
+    exec dbo.spGetArtistById :id
+  </sql-query>
+
 </hibernate-mapping>

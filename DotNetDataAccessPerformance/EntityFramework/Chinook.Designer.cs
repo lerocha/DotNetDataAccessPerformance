@@ -343,6 +343,25 @@ namespace DotNetDataAccessPerformance.EntityFramework
     
             return base.ExecuteFunction<GetSongsByArtistResult>("GetSongsByArtist", nameParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="id">No Metadata Documentation available.</param>
+        public ObjectResult<GetArtistByIdResult> GetArtistById(Nullable<global::System.Int32> id)
+        {
+            ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new ObjectParameter("id", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction<GetArtistByIdResult>("GetArtistById", idParameter);
+        }
 
         #endregion
     }
@@ -2802,6 +2821,81 @@ namespace DotNetDataAccessPerformance.EntityFramework
 
     #endregion
     #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="ChinookModel", Name="GetArtistByIdResult")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GetArtistByIdResult : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GetArtistByIdResult object.
+        /// </summary>
+        /// <param name="artistId">Initial value of the ArtistId property.</param>
+        public static GetArtistByIdResult CreateGetArtistByIdResult(global::System.Int32 artistId)
+        {
+            GetArtistByIdResult getArtistByIdResult = new GetArtistByIdResult();
+            getArtistByIdResult.ArtistId = artistId;
+            return getArtistByIdResult;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ArtistId
+        {
+            get
+            {
+                return _ArtistId;
+            }
+            set
+            {
+                OnArtistIdChanging(value);
+                ReportPropertyChanging("ArtistId");
+                _ArtistId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ArtistId");
+                OnArtistIdChanged();
+            }
+        }
+        private global::System.Int32 _ArtistId;
+        partial void OnArtistIdChanging(global::System.Int32 value);
+        partial void OnArtistIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

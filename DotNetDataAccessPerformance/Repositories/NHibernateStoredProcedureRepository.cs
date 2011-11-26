@@ -7,12 +7,20 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class NHibernateStoredProcedureRepository : IRepository
 	{
+		public Artist GetArtistById(int id)
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				var query = session.GetNamedQuery("spGetArtistById").SetInt32("id", id);
+				return query.List<Artist>().FirstOrDefault();
+			}
+		}
+
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
 			using (var session = NHibernateHelper.OpenSession())
 			{
-				var query = session.GetNamedQuery("spGetSongsByArtist")
-					.SetString("name", "Pearl Jam");
+				var query = session.GetNamedQuery("spGetSongsByArtist").SetString("name", name);
 				var songs = (from object[] item in query.List()
 				             select new Song
 				                    	{

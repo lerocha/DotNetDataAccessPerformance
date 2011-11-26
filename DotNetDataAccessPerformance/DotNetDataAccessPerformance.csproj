@@ -90,7 +90,10 @@
     <Compile Include="Domain\Song.cs" />
     <Compile Include="Repositories\RepositoryFactory.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="StoredProcedures\CreateGetArtistById.sql" />
+    <Content Include="StoredProcedures\CreateGetSongsByArtist.sql" />
+  </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="EntityFramework\Chinook.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

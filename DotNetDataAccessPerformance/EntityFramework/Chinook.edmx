@@ -314,6 +314,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spGetArtistById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetSongsByArtist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="name" Type="nvarchar" Mode="In" />
         </Function>
@@ -373,7 +376,10 @@
             <End Role="Track" EntitySet="Tracks" />
           </AssociationSet>
           <FunctionImport Name="GetSongsByArtist" ReturnType="Collection(ChinookModel.GetSongsByArtistResult)">
-            <Parameter Name="name" Mode="In" Type="String" />
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetArtistById" ReturnType="Collection(ChinookModel.GetArtistByIdResult)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Album">
@@ -625,6 +631,10 @@
           <Property Type="String" Name="SongName" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="ArtistName" Nullable="true" MaxLength="120" />
         </ComplexType>
+        <ComplexType Name="GetArtistByIdResult">
+          <Property Type="Int32" Name="ArtistId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="120" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -727,6 +737,14 @@
                 <ScalarProperty Name="AlbumName" ColumnName="AlbumName" />
                 <ScalarProperty Name="SongName" ColumnName="SongName" />
                 <ScalarProperty Name="ArtistName" ColumnName="ArtistName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetArtistById" FunctionName="ChinookModel.Store.spGetArtistById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChinookModel.GetArtistByIdResult">
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

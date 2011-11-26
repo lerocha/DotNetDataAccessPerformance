@@ -4,20 +4,49 @@ using System.Data.Objects;
 using System.Linq;
 using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.EntityFramework;
+using Artist = DotNetDataAccessPerformance.Domain.Artist;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
 	public class EntityFrameworkCompiledLinqQueryRepository : IRepository
 	{
-		private static Func<ChinookEntities, string, IQueryable<Song>> _compiledLinqQuery;
-
-		Func<ChinookEntities, string, IQueryable<Song>> CompiledLinqCompiledLinqQuery
+		private static Func<ChinookEntities, int, IQueryable<Artist>> _getArtistByIdQuery;
+		Func<ChinookEntities, int, IQueryable<Artist>> GetArtistByIdQuery
 		{
 			get
 			{
-				if (_compiledLinqQuery == null)
+				if (_getArtistByIdQuery == null)
 				{
-					_compiledLinqQuery = CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
+					_getArtistByIdQuery = CompiledQuery.Compile<ChinookEntities, int, IQueryable<Artist>>(
+							(context, id) => from artist in context.Artists 
+											 where artist.ArtistId == id
+											 select new Artist 
+											 {
+												 ArtistId = artist.ArtistId,
+												 Name = artist.Name
+											 });
+
+				}
+				return _getArtistByIdQuery;
+			}
+		}
+
+		public Artist GetArtistById(int id)
+		{
+			using (var context = new ChinookEntities())
+			{
+				return GetArtistByIdQuery.Invoke(context, id).FirstOrDefault();
+			}
+		}
+
+		private static Func<ChinookEntities, string, IQueryable<Song>> _getSongsByArtistQuery;
+		Func<ChinookEntities, string, IQueryable<Song>> GetSongsByArtistQuery
+		{
+			get
+			{
+				if (_getSongsByArtistQuery == null)
+				{
+					_getSongsByArtistQuery = CompiledQuery.Compile<ChinookEntities, string, IQueryable<Song>>(
 						(context, name) => from track in context.Tracks
 						                   where track.Album.Artist.Name == name
 						                   select new Song
@@ -28,7 +57,7 @@ namespace DotNetDataAccessPerformance.Repositories
 						                          	});
 				}
 
-				return _compiledLinqQuery;
+				return _getSongsByArtistQuery;
 			}
 		}
 
@@ -36,7 +65,7 @@ namespace DotNetDataAccessPerformance.Repositories
 		{
 			using (var context = new ChinookEntities())
 			{
-				return CompiledLinqCompiledLinqQuery.Invoke(context, "Pearl Jam").ToList();
+				return GetSongsByArtistQuery.Invoke(context, name).ToList();
 			}
 		}
 	}

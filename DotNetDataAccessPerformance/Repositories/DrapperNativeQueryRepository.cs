@@ -2,11 +2,21 @@ using System.Collections.Generic;
 using Dapper;
 using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.Helpers;
+using System.Linq;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
 	public class DrapperNativeQueryRepository : IRepository
 	{
+		public Artist GetArtistById(int id)
+		{
+			using (var connection = ConnectionFactory.OpenConnection())
+			{
+				return connection.Query<Artist>("SELECT ArtistId, Name FROM Artist WHERE Artist.ArtistId=@id", new { id })
+								 .FirstOrDefault();
+			}
+		}
+
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
 			const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
@@ -17,7 +27,7 @@ namespace DotNetDataAccessPerformance.Repositories
 
 			using (var connection = ConnectionFactory.OpenConnection())
 			{
-				return connection.Query<Song>(query, new { name = "Pearl Jam" });
+				return connection.Query<Song>(query, new { name });
 			}
 		}
 	}

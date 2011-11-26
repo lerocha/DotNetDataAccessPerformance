@@ -7,6 +7,15 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class NHibernateQueryStrongTypeRepository : IRepository
 	{
+		public Artist GetArtistById(int id)
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				var query = session.CreateQuery("from Artist artist where artist.ArtistId=" + id);
+				return query.List<Artist>().FirstOrDefault();
+			}
+		}
+
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
 			using (var session = NHibernateHelper.OpenSession())
@@ -15,7 +24,7 @@ namespace DotNetDataAccessPerformance.Repositories
 													  from Track track 
 													  join track.Album as album
 													  join album.Artist as artist
-													  where artist.Name='Pearl Jam'");
+													  where artist.Name='" + name + "'");
 
 				var songs = (from track in query.List<Track>()
 				             select new Song

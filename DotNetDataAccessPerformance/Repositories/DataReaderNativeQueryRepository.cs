@@ -7,13 +7,34 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class DataReaderNativeQueryRepository : IRepository
 	{
+		public Artist GetArtistById(int id)
+		{
+			string query = "SELECT ArtistId, Name FROM Artist WHERE Artist.ArtistId=" + id;
+			using (var connection = ConnectionFactory.OpenConnection())
+			{
+				var command = new SqlCommand(query, connection);
+				using (var reader = command.ExecuteReader())
+				{
+					if(reader.Read())
+					{
+						return new Artist 
+						       	{
+						       		ArtistId = (int) reader[0],
+									Name = (string) reader[1],
+						       	};
+					}
+				}
+			}
+			return null;
+		}
+
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
-			const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
-									FROM Artist
-									INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
-									INNER JOIN Track ON Track.AlbumId = Album.AlbumId
-									WHERE Artist.Name='Pearl Jam'";
+			string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
+							FROM Artist
+							INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+							INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+							WHERE Artist.Name='" + name + "'";
 
 			using (var connection = ConnectionFactory.OpenConnection())
 			{
