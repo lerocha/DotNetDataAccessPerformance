@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using DotNetDataAccessPerformance.Helpers;
 using DotNetDataAccessPerformance.Repositories;
@@ -9,7 +10,21 @@ namespace DotNetDataAccessPerformance.Tests
 {
 	public class PerformanceTests
 	{
-		private readonly int[] _totals = {1, 1, 10, 100, 500, 1000};
+		private readonly int[] _totals = { 1, 1, 10, 100, 500, 1000 };
+
+		private static DelimitedListTraceListener _listener;
+
+		public PerformanceTests()
+		{
+			if (_listener == null)
+			{
+				_listener = new DelimitedListTraceListener(@"PerformanceTests.csv");
+			}
+
+			Trace.Listeners.Clear();
+			Trace.Listeners.Add(_listener);
+			Trace.AutoFlush = true;
+		}
 
 		[Theory]
 		[InlineData(typeof(DataReaderNativeQueryRepository))]
@@ -24,11 +39,11 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(typeof(NHibernateHqlQueryRepository))]
 		[InlineData(typeof(NHibernateQueryStrongTypeRepository))]
 		[InlineData(typeof(NHibernateStoredProcedureRepository))]
-		public void GetSongsByArtistTest(Type type)
+		public void QueryUsingJoinsTest(Type type)
 		{
 			foreach (var total in _totals)
 			{
-				using (new TimeIt(total, type.Name))
+				using (new TimeIt(total, "QueryUsingJoins", type))
 				{
 					for (int i = 0; i < total; i++)
 					{
@@ -53,11 +68,11 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(typeof(NHibernateHqlQueryRepository))]
 		[InlineData(typeof(NHibernateQueryStrongTypeRepository))]
 		[InlineData(typeof(NHibernateStoredProcedureRepository))]
-		public void GetArtistByIdTest(Type type)
+		public void QueryByPrimaryKeyTest(Type type)
 		{
 			foreach (var total in _totals)
 			{
-				using (new TimeIt(total, type.Name))
+				using (new TimeIt(total, "QueryByPrimaryKey", type))
 				{
 					for (int i = 0; i < total; i++)
 					{
