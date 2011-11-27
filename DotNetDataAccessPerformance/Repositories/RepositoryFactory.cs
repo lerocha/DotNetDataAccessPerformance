@@ -38,9 +38,9 @@ namespace DotNetDataAccessPerformance.Repositories
 			{
 				return new EntityFrameworkStoredProcedureRepository();
 			}
-			if (type == typeof(NHibernateQueryStrongTypeRepository))
+			if (type == typeof(NHibernateHqlQueryStrongTypeRepository))
 			{
-				return new NHibernateQueryStrongTypeRepository();
+				return new NHibernateHqlQueryStrongTypeRepository();
 			}
 			if (type == typeof(NHibernateHqlQueryRepository))
 			{

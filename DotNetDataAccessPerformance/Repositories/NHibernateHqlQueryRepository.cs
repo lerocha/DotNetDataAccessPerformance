@@ -21,9 +21,9 @@ namespace DotNetDataAccessPerformance.Repositories
 			using (var session = NHibernateHelper.OpenSession())
 			{
 				var query = session.CreateQuery(@"from Track track 
-													join track.Album as album
-													join album.Artist as artist
-													where artist.Name='" + name + "'");
+												join track.Album as album
+												join album.Artist as artist
+												where artist.Name='" + name + "'");
 
 				var songs = (from object[] item in query.List()
 				             select new Song

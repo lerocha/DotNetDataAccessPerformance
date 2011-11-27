@@ -5,7 +5,7 @@ using DotNetDataAccessPerformance.Helpers;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
-	public class NHibernateQueryStrongTypeRepository : IRepository
+	public class NHibernateHqlQueryStrongTypeRepository : IRepository
 	{
 		public Artist GetArtistById(int id)
 		{
@@ -21,10 +21,10 @@ namespace DotNetDataAccessPerformance.Repositories
 			using (var session = NHibernateHelper.OpenSession())
 			{
 				var query = session.CreateQuery(@"select track
-													  from Track track 
-													  join track.Album as album
-													  join album.Artist as artist
-													  where artist.Name='" + name + "'");
+												from Track track 
+												join track.Album as album
+												join album.Artist as artist
+												where artist.Name='" + name + "'");
 
 				var songs = (from track in query.List<Track>()
 				             select new Song

@@ -84,7 +84,7 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\NHibernateNativeQueryRepository.cs" />
     <Compile Include="Repositories\NHibernateHqlQueryRepository.cs" />
-    <Compile Include="Repositories\NHibernateQueryStrongTypeRepository.cs" />
+    <Compile Include="Repositories\NHibernateHqlQueryStrongTypeRepository.cs" />
     <Compile Include="Repositories\NHibernateStoredProcedureRepository.cs" />
     <Compile Include="Tests\PerformanceTests.cs" />
     <Compile Include="Domain\Song.cs" />

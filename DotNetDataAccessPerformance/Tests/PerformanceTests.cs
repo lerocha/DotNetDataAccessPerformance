@@ -37,7 +37,7 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(typeof(EntityFrameworkStoredProcedureRepository))]
 		[InlineData(typeof(NHibernateNativeQueryRepository))]
 		[InlineData(typeof(NHibernateHqlQueryRepository))]
-		[InlineData(typeof(NHibernateQueryStrongTypeRepository))]
+		[InlineData(typeof(NHibernateHqlQueryStrongTypeRepository))]
 		[InlineData(typeof(NHibernateStoredProcedureRepository))]
 		public void QueryUsingJoinsTest(Type type)
 		{
@@ -66,7 +66,7 @@ namespace DotNetDataAccessPerformance.Tests
 		[InlineData(typeof(EntityFrameworkStoredProcedureRepository))]
 		[InlineData(typeof(NHibernateNativeQueryRepository))]
 		[InlineData(typeof(NHibernateHqlQueryRepository))]
-		[InlineData(typeof(NHibernateQueryStrongTypeRepository))]
+		[InlineData(typeof(NHibernateHqlQueryStrongTypeRepository))]
 		[InlineData(typeof(NHibernateStoredProcedureRepository))]
 		public void QueryByPrimaryKeyTest(Type type)
 		{

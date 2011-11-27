@@ -26,10 +26,10 @@ namespace DotNetDataAccessPerformance.Repositories
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
 			const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
-									   FROM Artist
-									   INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
-									   INNER JOIN Track ON Track.AlbumId = Album.AlbumId
-									   WHERE Artist.Name=@name";
+									FROM Artist
+									INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
+									INNER JOIN Track ON Track.AlbumId = Album.AlbumId
+									WHERE Artist.Name=@name";
 
 			using (var context = new ChinookEntities())
 			{
