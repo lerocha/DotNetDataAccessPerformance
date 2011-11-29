@@ -7,6 +7,21 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class NHibernateStoredProcedureRepository : IRepository
 	{
+		public void AddArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void UpdateArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void DeleteArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Artist GetArtistById(int id)
 		{
 			using (var session = NHibernateHelper.OpenSession())

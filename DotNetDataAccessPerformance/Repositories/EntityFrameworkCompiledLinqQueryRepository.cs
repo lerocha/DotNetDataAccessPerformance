@@ -10,6 +10,21 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class EntityFrameworkCompiledLinqQueryRepository : IRepository
 	{
+		public void AddArtist(Artist artist)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void UpdateArtist(Artist artist)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DeleteArtist(Artist artist)
+		{
+			throw new NotImplementedException();
+		}
+
 		private static Func<ChinookEntities, int, IQueryable<Artist>> _getArtistByIdQuery;
 		Func<ChinookEntities, int, IQueryable<Artist>> GetArtistByIdQuery
 		{

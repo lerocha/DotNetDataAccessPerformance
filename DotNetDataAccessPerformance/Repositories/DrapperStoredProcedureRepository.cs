@@ -9,6 +9,21 @@ namespace DotNetDataAccessPerformance.Repositories
 {
 	public class DrapperStoredProcedureRepository : IRepository
 	{
+		public void AddArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void UpdateArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void DeleteArtist(Artist artist)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Artist GetArtistById(int id)
 		{
 			using (var connection = ConnectionFactory.OpenConnection())
