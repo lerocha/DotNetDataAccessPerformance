@@ -64,11 +64,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Chinook.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EntityFramework\Repository\ObjectSetRepository.cs" />
-    <Compile Include="EntityFramework\Repository\ChinookUnitOfWork.cs" />
-    <Compile Include="EntityFramework\Repository\IChinookUnitOfWork.cs" />
-    <Compile Include="EntityFramework\Repository\IRepository.cs" />
-    <Compile Include="EntityFramework\Repository\IUnitOfWork.cs" />
     <Compile Include="Helpers\ConnectionFactory.cs" />
     <Compile Include="Helpers\NHibernateHelper.cs" />
     <Compile Include="Helpers\TimeIt.cs" />
