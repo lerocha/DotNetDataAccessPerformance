@@ -6,13 +6,13 @@ namespace DotNetDataAccessPerformance.Repositories
 	{
 		public static IRepository Create(Type type)
 		{
-			if (type == typeof(DrapperStoredProcedureRepository))
+			if (type == typeof(DapperStoredProcedureRepository))
 			{
-				return new DrapperStoredProcedureRepository();
+				return new DapperStoredProcedureRepository();
 			}
-			if (type == typeof(DrapperNativeQueryRepository))
+			if (type == typeof(DapperNativeQueryRepository))
 			{
-				return new DrapperNativeQueryRepository();
+				return new DapperNativeQueryRepository();
 			}
 			if (type == typeof(DataReaderNativeQueryRepository))
 			{

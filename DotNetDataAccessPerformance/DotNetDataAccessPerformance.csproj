@@ -70,8 +70,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DataReaderNativeQueryRepository.cs" />
     <Compile Include="Repositories\DataReaderStoredProcedureRepository.cs" />
-    <Compile Include="Repositories\DrapperNativeQueryRepository.cs" />
-    <Compile Include="Repositories\DrapperStoredProcedureRepository.cs" />
+    <Compile Include="Repositories\DapperNativeQueryRepository.cs" />
+    <Compile Include="Repositories\DapperStoredProcedureRepository.cs" />
     <Compile Include="Repositories\EntityFrameworkCompiledLinqQueryRepository.cs" />
     <Compile Include="Repositories\EntityFrameworkLinqToEntitiesRepository.cs" />
     <Compile Include="Repositories\EntityFrameworkNativeQueryRepository.cs" />

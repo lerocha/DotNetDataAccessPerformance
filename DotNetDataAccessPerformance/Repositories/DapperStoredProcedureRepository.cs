@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Dapper;
 using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.Helpers;
-using System.Linq;
 
 namespace DotNetDataAccessPerformance.Repositories
 {
-	public class DrapperNativeQueryRepository : IRepository
+	public class DapperStoredProcedureRepository : IRepository
 	{
 		public void AddArtist(Artist artist)
 		{
@@ -27,22 +28,19 @@ namespace DotNetDataAccessPerformance.Repositories
 		{
 			using (var connection = ConnectionFactory.OpenConnection())
 			{
-				return connection.Query<Artist>("SELECT ArtistId, Name FROM Artist WHERE Artist.ArtistId=@id", new { id })
+				return connection.Query<Artist>("spGetArtistById", new { id }, 
+												commandType: CommandType.StoredProcedure)
 								 .FirstOrDefault();
 			}
 		}
 
 		public IEnumerable<Song> GetSongsByArtist(string name)
 		{
-			const string query = @"SELECT Album.Title as AlbumName, Track.Name as SongName, Artist.Name as ArtistName
-									FROM Artist
-									INNER JOIN Album ON Album.ArtistId = Artist.ArtistId
-									INNER JOIN Track ON Track.AlbumId = Album.AlbumId
-									WHERE Artist.Name=@name";
-
 			using (var connection = ConnectionFactory.OpenConnection())
 			{
-				return connection.Query<Song>(query, new { name });
+				return connection.Query<Song>("spGetSongsByArtist",
+				                                new { name },
+				                                commandType: CommandType.StoredProcedure);
 			}
 		}
 	}
