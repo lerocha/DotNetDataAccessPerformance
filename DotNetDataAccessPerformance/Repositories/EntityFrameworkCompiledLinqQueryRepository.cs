@@ -50,6 +50,7 @@ namespace DotNetDataAccessPerformance.Repositories
 		{
 			using (var context = new ChinookEntities())
 			{
+				context.Artists.MergeOption = MergeOption.NoTracking;
 				return GetArtistByIdQuery.Invoke(context, id).FirstOrDefault();
 			}
 		}
@@ -80,6 +81,7 @@ namespace DotNetDataAccessPerformance.Repositories
 		{
 			using (var context = new ChinookEntities())
 			{
+				context.Tracks.MergeOption = MergeOption.NoTracking;
 				return GetSongsByArtistQuery.Invoke(context, name).ToList();
 			}
 		}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 using DotNetDataAccessPerformance.Domain;
 using DotNetDataAccessPerformance.EntityFramework;
@@ -34,6 +35,9 @@ namespace DotNetDataAccessPerformance.Repositories
 				                   		ArtistId = artist.ArtistId,
 				                   		Name = artist.Name
 				                   	};
+
+				((ObjectQuery)query).MergeOption = MergeOption.NoTracking;
+
 				return query.FirstOrDefault();
 			}
 		}
@@ -50,6 +54,9 @@ namespace DotNetDataAccessPerformance.Repositories
 				                   		ArtistName = track.Album.Artist.Name,
 				                   		SongName = track.Name
 				                   	};
+
+				((ObjectQuery)query).MergeOption = MergeOption.NoTracking;
+
 				return query.ToList();
 			}
 		}
